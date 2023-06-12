@@ -1,0 +1,70 @@
+﻿@model ShopingCartSystem.Models.ProductDetial.ProductDTO
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+
+
+<h2>Shoping Cart</h2>
+<center>
+		<table class="table">
+			<tr>
+				<th>รหัสสินค้า</th>
+				<th>ชื่อสินค้า</th>
+				<th>จำนวน</th>
+				<th>ราคา</th>
+				<th>Add To Cart</th>
+			</tr>
+				@if (Model.Products != null)
+				{
+					@foreach (var data in Model.Products)
+					{
+					<tr>
+						<td>@data.id</td>
+						<td>@data.ProductName</td>
+						<td>@data.ProductUnit</td>
+						<td>@data.ProductPrice</td>
+						<td><a href="#" onclick="UpdateCart(@data.id,@data.ProductUnit);">ADD</a></td>
+						</tr>
+					}
+				}
+		</table>
+</center>
+</div>
+
+@section Scripts{
+	<script type="text/javascript">
+		function UpdateCart(getid, getUnit) {
+			if (getUnit <= 0) {
+				alert("ไม่สามารถเพิ่มสินค้าลงตะกร้าได้");
+				return true;
+			}
+			alert("เพิ่มสินค้าในตะกร้า");
+			var data = {
+				id: getid
+			};
+			let uri = '@Url.Action("AddCart", "HOME")';
+			$.ajax({
+				url: uri,
+				type: "POST",
+				contentType: "application/json",
+				data: JSON.stringify(data),
+				success: function (data) {
+					// handle the response from the API endpoint
+					// ...
+					location.reload();
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					// handle any errors that occur during the request
+					// ...
+				}
+			});
+		}
+	</script>
+}
+
+

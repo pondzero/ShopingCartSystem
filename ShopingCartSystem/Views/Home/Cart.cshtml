@@ -1,0 +1,122 @@
+﻿@model ShopingCartSystem.Models.ProductDetial.ProductDTO
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<div class="container bootstrap snippets bootdey">
+    <div class="col-md-9 col-sm-8 content">
+        <div class="row">
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                    <li> / </li>
+                    <li class="active">Cart</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info panel-shadow">
+                    <div class="panel-heading">
+                        <h3>
+                            <img class="img-circle img-thumbnail" src="https://bootdey.com/img/Content/user_3.jpg">
+                            Chaloempol  Kittiwichchachai
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive" id="pondzero">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product ID</th>
+                                        <th>Description</th>
+                                        <th>Qty</th>
+                                        <th>Price</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Products != null)
+                                    {
+                                        @foreach (var data in Model.Products)
+                                        {
+                                            <tr>
+                                                <td>@data.id</td>
+                                                <td><strong>@data.ProductName</strong></td>
+                                                <td>
+                                                    <form class="form-inline">
+                                                        <input class="form-control" type="text" value="@data.ProductUnit">
+                                                    </form>
+                                                </td>
+                                                <td>@data.Total</td>
+                                                <td><a href="#" class="btn btn-primary" onclick="DelCart(@data.id);"><i class="fa fa-trash-o"></i></a></td>
+                                            </tr>
+                                        }
+
+                                    }
+                                    <tr>
+                                        <td colspan="6">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="text-right"><strong>Total</strong></td>
+                                           <td>@Model.SumTotal</td> 
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary pull-right" onclick="CheckOut();">Check Out<span class="glyphicon glyphicon-chevron-right"></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        function DelCart(getid) {
+            alert('ลบข้อมูลสินค้าในตะกร้า');
+            var data = {
+                id: getid
+            };
+            let uri = '@Url.Action("DelCart", "HOME")';
+            $.ajax({
+                url: uri,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (data) {
+                    // handle the response from the API endpoint
+                    // ...
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    // handle any errors that occur during the request
+                    // ...
+                }
+            });
+        }
+
+        function CheckOut(){
+            var data = {
+                id: 1
+            };
+                let uri = '@Url.Action("CheckOut", "HOME")';
+                $.ajax({
+                    url: uri,
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        // handle any errors that occur during the request
+                        // ...
+                    }
+                });  
+        }
+    </script>
+}
